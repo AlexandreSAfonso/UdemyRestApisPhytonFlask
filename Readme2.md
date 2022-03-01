@@ -11,6 +11,8 @@ python -m venv .venv
 
 #Activando o ambiente (onde .venv deve bater com o ambiente criado)
 python -m venv .venv
+ou
+source .venv/bin/activate
 ou no windows =>> ./.venv/Scripts/activate.bat
 para desativar usar >> deactivate
 
