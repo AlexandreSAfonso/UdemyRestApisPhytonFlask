@@ -7,8 +7,8 @@ class Hoteis(Resource):
 
 class Hotel(Resource):
     argumentos = reqparse.RequestParser()
-    argumentos.add_argument('nome')
-    argumentos.add_argument('estrelas')
+    argumentos.add_argument('nome', type=str, required=True, help="The field 'Nome' cannot be left blank")
+    argumentos.add_argument('estrelas', type=float, required=True, help="The field 'estrelas' cannot be left blank")
     argumentos.add_argument('diaria')
     argumentos.add_argument('cidade')
 
@@ -23,7 +23,10 @@ class Hotel(Resource):
             return {"message": "Hotel id '{}' already exists.".format(hotel_id)}, 400 # Bad Request
         dados = Hotel.argumentos.parse_args()
         hotel = HotelModel(hotel_id, **dados)
-        hotel.save_hotel()
+        try:
+            hotel.save_hotel()
+        except:
+            return {'message': 'A Internal erro ocurred trying to save Hotel'}, 500
         return hotel.json(), 200
 
     def put(self, hotel_id):
@@ -34,13 +37,19 @@ class Hotel(Resource):
             hotel_finded.save_hotel()
             return hotel_finded.json(), 200
         hotel = HotelModel(hotel_id, **dados)
-        hotel.save_hotel()
+        try:
+            hotel.save_hotel()
+        except:
+            return {'message': 'A Internal erro ocurred trying to save Hotel'}, 500
         return hotel.json(), 201
 
     def delete(self, hotel_id):
         hotel_finded = HotelModel.find_hotel(hotel_id)
         if hotel_finded:
-            hotel_finded.delete_hotel()
+            try:
+                hotel_finded.delete_hotel()
+            except:
+                return {'message': 'A Internal erro ocurred trying to delete Hotel'}, 500
             return {'message': 'Hotel Deleted.'}, 200
         return {'message': 'Hotel Not Found.'}, 404
         #return {'Hoteis': hoteis}
