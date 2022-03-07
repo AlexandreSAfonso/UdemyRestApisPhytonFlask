@@ -56,7 +56,7 @@ class Hoteis(Resource):
             consulta = "Select * \
                 from hoteis \
                 where (estrelas > ? and estrelas < ? ) \
-                and (diaria > ? and diaria < ? )  \
+                and (diaria >= ? and diaria <= ? )  \
                 LIMIT ? OFFSET ? "
             tupla =  tuple([parametros[chave] for chave in parametros])
             resultado = cursor.execute (consulta, tupla)
@@ -64,7 +64,7 @@ class Hoteis(Resource):
             consulta =  "Select * \
                 from hoteis \
                 where (estrelas > ? and estrelas < ? )\
-                and (diaria > ? and diaria < ? )\
+                and (diaria >= ? and diaria <= ? )\
                 and cidade = ? \
                 LIMIT ? OFFSET ? "
             tupla =  tuple([parametros[chave] for chave in parametros])
