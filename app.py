@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from flask_restful import Api
 from resources.hotel import Hoteis, Hotel
 from resources.user import User, UserRegister, UserLogin, UserLogout
-from resources.site import SiteModel, Site, Sites
+from resources.site import Site, Sites
 from flask_jwt_extended import JWTManager
 from blacklist import BLACKLIST
 

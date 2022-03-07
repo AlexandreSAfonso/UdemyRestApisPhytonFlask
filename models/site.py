@@ -26,6 +26,13 @@ class SiteModel(banco.Model):
             return site
         return None
 
+    def find_site_by_id(cls, site_id):
+        site = cls.query.filter_by(site_id=site_id).first()
+        #.first #Select * from hoteis where Site_id = Site_id passado limit one
+        if site:
+            return site
+        return None
+
     def save_site(self):
         banco.session.add(self)
         banco.session.commit()
@@ -34,5 +41,6 @@ class SiteModel(banco.Model):
         self.url = url
 
     def delete_site(self, url):
+        [hotel.delete_hotel() for hotel in self.hoteis] #deletanndo hoteis associados
         banco.session.delete(self)
         banco.session.commit()
