@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse
 from models.user import UserModel
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
-from werkzeug.security import safe_str_cmp
+from werkzeug.security import check_password_hash
 from blacklist import BLACKLIST
 
 atributos = reqparse.RequestParser()
@@ -18,6 +18,7 @@ class User(Resource):
         return {'message':'User Not Found.'}, 404 #not found
 
     def put(self, user_id):
+        user = UserModel.find_user(user_id)
         dados = user.atributos.parse_args()
         user_finded = UserModel.find_user(user_id)
         if user_finded:
@@ -63,7 +64,7 @@ class UserLogin(Resource):
     def post(cls):
         dados = atributos.parse_args()
         user = UserModel.find_by_login(dados['login'])
-        if user and safe_str_cmp(user.senha, dados['senha']):
+        if user and check_password_hash(user.senha, dados['senha']):
             token_de_acesso = create_access_token(identity=user.user_id)
             return {'access_token': token_de_acesso}, 200
         return {'message': 'The Username or password is incorrect.'}, 401
